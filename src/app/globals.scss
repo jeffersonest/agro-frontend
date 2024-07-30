@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* Branco */
+    --foreground: 20 14.3% 4.1%; /* Cinza escuro */
+    --card: 0 0% 100%; /* Branco */
+    --card-foreground: 20 14.3% 4.1%; /* Cinza escuro */
+    --popover: 0 0% 100%; /* Branco */
+    --popover-foreground: 20 14.3% 4.1%; /* Cinza escuro */
+    --primary: 163 80% 43%; /* Verde */
+    --primary-foreground: 0 0% 100%; /* Branco */
+    --secondary: 162 52.7% 67.3%; /* Verde claro */
+    --secondary-foreground: 20 14.3% 4.1%; /* Cinza escuro */
+    --muted: 162 52.7% 67.3%; /* Verde claro */
+    --muted-foreground: 25 5.3% 44.7%; /* Cinza escuro */
+    --accent: 162 52.7% 67.3%; /* Verde claro */
+    --accent-foreground: 20 14.3% 4.1%; /* Cinza escuro */
+    --destructive: 0 84.2% 60.2%; /* Vermelho */
+    --destructive-foreground: 0 0% 100%; /* Branco */
+    --border: 20 5.9% 90%; /* Cinza claro */
+    --input: 20 5.9% 90%; /* Cinza claro */
+    --ring: 163 80% 43%; /* Verde */
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%; /* Vermelho */
+    --chart-2: 173 58% 39%; /* Verde */
+    --chart-3: 197 37% 24%; /* Azul */
+    --chart-4: 43 74% 66%; /* Amarelo */
+    --chart-5: 27 87% 67%; /* Laranja */
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%; /* Cinza escuro */
+    --foreground: 0 0% 100%; /* Branco */
+    --card: 20 14.3% 4.1%; /* Cinza escuro */
+    --card-foreground: 0 0% 100%; /* Branco */
+    --popover: 20 14.3% 4.1%; /* Cinza escuro */
+    --popover-foreground: 0 0% 100%; /* Branco */
+    --primary: 162 52.7% 67.3%; /* Verde claro */
+    --primary-foreground: 20 14.3% 4.1%; /* Cinza escuro */
+    --secondary: 163 80% 43%; /* Verde */
+    --secondary-foreground: 0 0% 100%; /* Branco */
+    --muted: 162 52.7% 67.3%; /* Verde claro */
+    --muted-foreground: 25 5.3% 44.7%; /* Cinza escuro */
+    --accent: 162 52.7% 67.3%; /* Verde claro */
+    --accent-foreground: 0 0% 100%; /* Branco */
+    --destructive: 0 62.8% 30.6%; /* Vermelho */
+    --destructive-foreground: 0 0% 100%; /* Branco */
+    --border: 12 6.5% 15.1%; /* Cinza escuro */
+    --input: 12 6.5% 15.1%; /* Cinza escuro */
+    --ring: 163 80% 43%; /* Verde */
+    --chart-1: 220 70% 50%; /* Azul */
+    --chart-2: 160 60% 45%; /* Verde */
+    --chart-3: 30 80% 55%; /* Amarelo */
+    --chart-4: 280 65% 60%; /* Roxo */
+    --chart-5: 340 75% 55%; /* Rosa */
+  }
+
+  .hover\:bg-primary-dark:hover {
+    background-color: hsl(163, 80%, 33%); /* Verde mais escuro */
+  }
+
+  .hover\:bg-secondary-dark:hover {
+    background-color: hsl(162, 52.7%, 57.3%); /* Verde claro mais escuro */
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
