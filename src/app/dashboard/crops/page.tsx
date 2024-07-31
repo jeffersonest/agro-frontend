@@ -133,7 +133,7 @@ const CropsPage: React.FC = () => {
   return (
     <section className='py-1'>
       <div className='flex items-center justify-end h-[60px]'>
-        <Button onClick={() => setIsDrawerOpen(true)}>Create Crop</Button>
+        <Button onClick={() => {setIsDrawerOpen(true); setSelectedCrop(null);}}>Create Crop</Button>
       </div>
       <table className="min-w-full bg-white px-3">
         <thead className='h-[80px] p-3'>
