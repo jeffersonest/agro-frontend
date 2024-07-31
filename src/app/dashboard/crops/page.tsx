@@ -81,7 +81,6 @@ const CropsPage: React.FC = () => {
 
   const columns = useMemo<ColumnDef<Crop, ColumnMeta>[]>(
     () => [
-      { accessorKey: 'id', header: 'ID', meta: { isHiddenMobile: true } },
       { accessorKey: 'name', header: 'Name' },
       { accessorKey: 'createdAt', header: 'Created At', meta: { isHiddenMobile: true } },
       {
