@@ -1,15 +1,15 @@
+'use client';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.scss';
 import { Toaster } from '../components/ui/toaster';
 import { AuthProvider } from '../contexts/auth.context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'Agro App',
-  description: 'An agro manager app',
-};
+const queryClient = new QueryClient();
+
 
 export default function RootLayout({
   children,
@@ -36,12 +36,15 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
         <meta name="theme-color" content="#ffffff" />
+        <title>Agro Manager</title>
       </head>
       <body className={inter.className}>
-        <AuthProvider>
-          {children}
-          <Toaster />
-        </AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );

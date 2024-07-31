@@ -4,7 +4,7 @@ import React, { createContext, useState, useEffect, useCallback, useContext } fr
 import { AuthContextData } from '../types/auth-context.interface';
 import { User } from '../types/user.interface';
 import fetcher, { refreshAccessToken } from '../lib/api';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const clearContext: AuthContextData = {
   user: null,
@@ -32,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const storedAccessToken = localStorage.getItem('token');
@@ -42,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAccessToken(storedAccessToken);
       setRefreshToken(storedRefreshToken);
       setUser(JSON.parse(storedUser));
-    } else {
+    } else if (pathname !== '/register') {
       router.push('/login');
     }
   }, [router]);

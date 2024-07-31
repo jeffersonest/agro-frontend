@@ -1,12 +1,12 @@
 import React from 'react';
 import Container from '../../../components/base/container';
 
-const CropPage: React.FC = () => {
+const ProducerPage: React.FC = () => {
   return (
     <Container>
-      Crop page
+      Producers page
     </ Container>
   );
 };
 
-export default CropPage;
+export default ProducerPage;
