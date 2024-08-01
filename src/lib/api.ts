@@ -40,7 +40,8 @@ const fetcher = async (url: string, options: RequestInit = {}): Promise<any> => 
       }
     }
     const error = await response.json();
-    throw new Error(error.message || 'Something went wrong');
+    console.log(error);
+    throw { message: error.message, errors: error.errors };
   }
 
   return response.json();

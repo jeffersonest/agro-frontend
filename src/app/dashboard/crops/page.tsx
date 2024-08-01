@@ -7,7 +7,6 @@ import {
   getCoreRowModel,
   flexRender,
   useReactTable,
-  TableMeta,
 } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
@@ -23,6 +22,26 @@ const fetchCrops = async (): Promise<Crop[]> => {
 interface ColumnMeta {
   isHiddenMobile?: boolean;
 }
+
+const handleValidationError = async (error: any) => {
+  if (error.message === 'Validation Error') {
+    if (error.errors && error.errors.length > 0) {
+      error.errors.forEach((err: any) => {
+        Object.values(err.constraints).forEach((constraint: string) => {
+          toast({
+            title: 'Validation Error',
+            description: `${err.property}: ${constraint}`,
+          });
+        });
+      });
+    }
+  } else {
+    toast({
+      title: 'Error',
+      description: error.message || 'An error occurred while processing your request',
+    });
+  }
+};
 
 const CropsPage: React.FC = () => {
   const queryClient = useQueryClient();
@@ -47,6 +66,7 @@ const CropsPage: React.FC = () => {
         description: 'Crop created successfully',
       });
     },
+    onError: handleValidationError,
   });
 
   const updateMutation = useMutation({
@@ -63,6 +83,7 @@ const CropsPage: React.FC = () => {
         description: 'Crop updated successfully',
       });
     },
+    onError: handleValidationError,
   });
 
   const deleteMutation = useMutation({
@@ -77,6 +98,7 @@ const CropsPage: React.FC = () => {
         description: 'Crop deleted successfully',
       });
     },
+    onError: handleValidationError,
   });
 
   const columns = useMemo<ColumnDef<Crop, ColumnMeta>[]>(

@@ -23,6 +23,27 @@ interface ColumnMeta {
   isHiddenMobile?: boolean;
 }
 
+const handleValidationError = async (error: any) => {
+  if (error.message === 'Validation Error') {
+    if (error.errors && error.errors.length > 0) {
+      error.errors.forEach((err: any) => {
+        //@ts-ignore
+        Object.values(err.constraints).forEach((constraint: string) => {
+          toast({
+            title: 'Validation Error',
+            description: `${err.property}: ${constraint}`,
+          });
+        });
+      });
+    }
+  } else {
+    toast({
+      title: 'Error',
+      description: error.message || 'An error occurred while processing your request',
+    });
+  }
+};
+
 const ProducersPage: React.FC = () => {
   const queryClient = useQueryClient();
   const { data: producers, isLoading } = useQuery({
@@ -46,12 +67,7 @@ const ProducersPage: React.FC = () => {
         description: 'Producer created successfully',
       });
     },
-    onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'An error occurred while creating the producer',
-      });
-    },
+    onError: handleValidationError,
   });
 
   const updateMutation = useMutation({
@@ -68,12 +84,7 @@ const ProducersPage: React.FC = () => {
         description: 'Producer updated successfully',
       });
     },
-    onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'An error occurred while updating the producer',
-      });
-    },
+    onError: handleValidationError,
   });
 
   const deleteMutation = useMutation({

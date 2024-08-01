@@ -60,6 +60,27 @@ const ProducerCropsPage: React.FC = () => {
   const [selectedProducerCrop, setSelectedProducerCrop] = useState<ProducerCrop | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  const handleValidationError = async (error: any) => {
+    if (error.message === 'Validation Error') {
+      if (error.errors && error.errors.length > 0) {
+        error.errors.forEach((err: any) => {
+          //@ts-ignore
+          Object.values(err.constraints).forEach((constraint: string) => {
+            toast({
+              title: 'Validation Error',
+              description: `${err.property}: ${constraint}`,
+            });
+          });
+        });
+      }
+    } else {
+      toast({
+        title: 'Error',
+        description: error.message || 'An error occurred while processing your request',
+      });
+    }
+  };
+
   const createMutation = useMutation({
     mutationFn: (newProducerCrop: Partial<ProducerCrop>) =>
       fetcher('/producer-crops', {
@@ -74,12 +95,7 @@ const ProducerCropsPage: React.FC = () => {
         description: 'ProducerCrop created successfully',
       });
     },
-    onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'An error occurred while creating the ProducerCrop',
-      });
-    },
+    onError: handleValidationError,
   });
 
   const updateMutation = useMutation({
@@ -96,12 +112,7 @@ const ProducerCropsPage: React.FC = () => {
         description: 'ProducerCrop updated successfully',
       });
     },
-    onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'An error occurred while updating the ProducerCrop',
-      });
-    },
+    onError: handleValidationError,
   });
 
   const deleteMutation = useMutation({
