@@ -36,7 +36,7 @@ const fetcher = async (url: string, options: RequestInit = {}): Promise<any> => 
       const newToken = await refreshAccessToken(refreshToken);
       if (newToken) {
         localStorage.setItem('token', newToken);
-        return fetcher(url, options); // Retry the original request with new token
+        return fetcher(url, options);
       }
     }
     const error = await response.json();

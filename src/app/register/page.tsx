@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useAuth } from '../../contexts/auth.context';
 import { useToast } from '../../components/ui/use-toast';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import { useRouter } from 'next/navigation';
 
 interface RegisterFormInputs {
   email: string;
@@ -20,11 +21,13 @@ const RegisterPage: React.FC = () => {
   const { register, handleSubmit } = useForm<RegisterFormInputs>();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     try {
       setLoading(true);
       await registerUser(data.email, data.password, data.name);
+      router.push('/dashboard');
     } catch (error) {
       toast({
         title: "Uh oh! Something went wrong.",
@@ -34,7 +37,6 @@ const RegisterPage: React.FC = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">

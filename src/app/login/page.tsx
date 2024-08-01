@@ -13,11 +13,17 @@ import { useRouter } from 'next/navigation';
 import { LoginFormInputs } from '../../types/login-input.interface';
 
 const LoginPage: React.FC = () => {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const { register, handleSubmit } = useForm<LoginFormInputs>();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/dashboard');
+    }
+  }, [user, router]);
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {

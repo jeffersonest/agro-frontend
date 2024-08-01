@@ -136,8 +136,8 @@ const ProducerCropsPage: React.FC = () => {
         header: 'Actions',
         cell: ({ row }) => (
           <div className="flex gap-2 justify-end items-center">
-            <Button onClick={() => handleEdit(row.original)}>Edit</Button>
-            <Button onClick={() => handleDelete(row.original.id)}>Delete</Button>
+            <Button variant="outline" onClick={() => handleEdit(row.original)}>Edit</Button>
+            <Button variant="destructive" color="red" onClick={() => handleDelete(row.original.id)}>Delete</Button>
           </div>
         ),
       },
@@ -183,41 +183,45 @@ const ProducerCropsPage: React.FC = () => {
 
   return (
     <>
-      <div className='flex items-center justify-end h-[60px]'>
-        <Button onClick={() => { setIsDrawerOpen(true); setSelectedProducerCrop(null); }}>Create ProducerCrop</Button>
+      <div className="flex items-center justify-end h-[60px]">
+        <Button onClick={() => { setIsDrawerOpen(true); setSelectedProducerCrop(null); }}>Create Farm</Button>
       </div>
-      <section className='py-1 overflow-y-scroll'>
-        <table className="min-w-full bg-white px-3">
-          <thead className='h-[80px] p-3'>
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr className='p-3' key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <th className={`p-3 ${header.column.columnDef.meta?.isHiddenMobile ? 'hidden lg:table-cell' : ''} text-left`} key={header.id}>
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody className='p-3'>
-            {table.getRowModel().rows.map(row => (
-              <tr className='p-3' key={row.id}>
-                {row.getVisibleCells().map(cell => (
-                  <td className={`p-3 ${cell.column.columnDef.meta?.isHiddenMobile ? 'hidden lg:table-cell' : ''}`} key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="overflow-x-auto">
+        <section className="py-1">
+          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-gray-200">
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map(header => (
+                    <th className={`p-3 text-left ${header.column.columnDef.meta?.isHiddenMobile ? 'hidden lg:table-cell' : ''}`} key={header.id}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map(row => (
+                <tr className="border-b last:border-none hover:bg-gray-100" key={row.id}>
+                  {row.getVisibleCells().map(cell => (
+                    <td className={`p-3 ${cell.column.columnDef.meta?.isHiddenMobile ? 'hidden lg:table-cell' : ''}`} key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </div>
 
-        <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-          <DrawerContent className='min-h-[250px] sm:min-h-[250px] overflow-y-hidden'>
-            <div className='p-10'>
-              <form className='grid grid-cols-1 gap-5 sm:grid-cols-2' onSubmit={handleSubmit}>
+      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerContent>
+          <div className="p-10">
+            <form className="grid grid-cols-1 gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
+              <div className="col-span-1 sm:col-span-2">
                 <Select name="producerId" defaultValue={selectedProducerCrop?.producer.id || ''}>
-                  <SelectTrigger className='w-full'>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a Producer" />
                   </SelectTrigger>
                   <SelectContent>
@@ -229,8 +233,10 @@ const ProducerCropsPage: React.FC = () => {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="col-span-1 sm:col-span-2">
                 <Select name="cropId" defaultValue={selectedProducerCrop?.crop.id || ''}>
-                  <SelectTrigger className='w-full'>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a Crop" />
                   </SelectTrigger>
                   <SelectContent>
@@ -242,13 +248,13 @@ const ProducerCropsPage: React.FC = () => {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-                <Input name="area" type="number" defaultValue={selectedProducerCrop?.area || ''} placeholder="Area" />
-                <Button type="submit" className='col-span-1 sm:col-span-2'>{selectedProducerCrop ? 'Update' : 'Create'}</Button>
-              </form>
-            </div>
-          </DrawerContent>
-        </Drawer>
-      </section>
+              </div>
+              <Input name="area" type="number" defaultValue={selectedProducerCrop?.area || ''} placeholder="Area" />
+              <Button type="submit" className="col-span-1 sm:col-span-2">{selectedProducerCrop ? 'Update' : 'Create'}</Button>
+            </form>
+          </div>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };

@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else if (pathname !== '/register') {
       router.push('/login');
     }
-  }, [router]);
+  }, [router, pathname]);
 
   const login = async (email: string, password: string) => {
     const response = await fetcher('/auth/login', {
@@ -54,13 +54,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       body: JSON.stringify({ email, password }),
     });
     const { accessToken, refreshToken, user } = response;
-    console.log(user);
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setUser(user);
     localStorage.setItem('token', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('user', JSON.stringify(user));
+    router.push('/dashboard');
   };
 
   const logout = () => {
@@ -93,7 +93,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [refreshToken]);
 
   return (
-
     <AuthContext.Provider value={{ user, accessToken, refreshToken, login, logout, register, refreshAccessToken: refreshAccessTokenHandler }}>
       {children}
     </AuthContext.Provider>

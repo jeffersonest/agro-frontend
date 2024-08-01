@@ -111,8 +111,8 @@ const ProducersPage: React.FC = () => {
         header: 'Actions',
         cell: ({ row }) => (
           <div className="flex gap-2 justify-end items-center">
-            <Button onClick={() => handleEdit(row.original)}>Edit</Button>
-            <Button onClick={() => handleDelete(row.original.id)}>Delete</Button>
+            <Button variant="outline" onClick={() => handleEdit(row.original)}>Edit</Button>
+            <Button variant="destructive" color="red" onClick={() => handleDelete(row.original.id)}>Delete</Button>
           </div>
         ),
       },
@@ -143,7 +143,7 @@ const ProducersPage: React.FC = () => {
     const formData = new FormData(e.target as HTMLFormElement);
     const updatedProducer = {
       ...selectedProducer,
-      identification: formData.get('identification') as string,
+      identification: (formData.get('identification') as string).replace(/\D/g, '').slice(0, 14),
       producerName: formData.get('producerName') as string,
       farmName: formData.get('farmName') as string,
       city: formData.get('city') as string,
@@ -160,57 +160,65 @@ const ProducersPage: React.FC = () => {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === 'identification') {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 14);
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
-      <div className='flex items-center justify-end h-[60px]'>
+      <div className="flex items-center justify-end h-[60px]">
         <Button onClick={() => { setIsDrawerOpen(true); setSelectedProducer(null); }}>Create Producer</Button>
       </div>
-      <section className='py-1 overflow-y-scroll'>
-        <table className="min-w-full bg-white px-3">
-          <thead className='h-[80px] p-3'>
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr className='p-3' key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <th className={`p-3 ${header.column.columnDef.meta?.isHiddenMobile ? 'hidden lg:table-cell' : ''}`} key={header.id}>
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody className='p-3'>
-            {table.getRowModel().rows.map(row => (
-              <tr className='p-3' key={row.id}>
-                {row.getVisibleCells().map(cell => (
-                  <td className={`p-3 ${cell.column.columnDef.meta?.isHiddenMobile ? 'hidden lg:table-cell' : ''}`} key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="overflow-x-auto">
+        <section className="py-1">
+          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-gray-200">
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map(header => (
+                    <th className={`p-3 text-left ${header.column.columnDef.meta?.isHiddenMobile ? 'hidden lg:table-cell' : ''}`} key={header.id}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map(row => (
+                <tr className="border-b last:border-none hover:bg-gray-100" key={row.id}>
+                  {row.getVisibleCells().map(cell => (
+                    <td className={`p-3 ${cell.column.columnDef.meta?.isHiddenMobile ? 'hidden lg:table-cell' : ''}`} key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </div>
 
-        <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-          <DrawerContent className='min-h-[600px] sm:min-h-[400px] overflow-y-hidden'>
-            <div className='p-10'>
-              <form className='grid grid-cols-1 gap-5 sm:grid-cols-2' onSubmit={handleSubmit}>
-                <Input name="identification" defaultValue={selectedProducer?.identification || ''} placeholder="Identification" />
-                <Input name="producerName" defaultValue={selectedProducer?.producerName || ''} placeholder="Producer Name" />
-                <Input name="farmName" defaultValue={selectedProducer?.farmName || ''} placeholder="Farm Name" />
-                <Input name="city" defaultValue={selectedProducer?.city || ''} placeholder="City" />
-                <Input name="state" defaultValue={selectedProducer?.state || ''} placeholder="State" />
-                <Input name="farmSize" type="number" defaultValue={selectedProducer?.farmSize || ''} placeholder="Farm Size" />
-                <Input name="usableArea" type="number" defaultValue={selectedProducer?.usableArea || ''} placeholder="Usable Area" />
-                <Input name="vegetationArea" type="number" defaultValue={selectedProducer?.vegetationArea || ''} placeholder="Vegetation Area" />
-                <Button type="submit" className='col-span-1 sm:col-span-2'>{selectedProducer ? 'Update' : 'Create'}</Button>
-              </form>
-            </div>
-          </DrawerContent>
-        </Drawer>
-      </section>
+      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerContent>
+          <div className="p-10">
+            <form className="grid grid-cols-1 gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
+              <Input name="identification" defaultValue={selectedProducer?.identification || ''} placeholder="Identification" onChange={handleInputChange} />
+              <Input name="producerName" defaultValue={selectedProducer?.producerName || ''} placeholder="Producer Name" />
+              <Input name="farmName" defaultValue={selectedProducer?.farmName || ''} placeholder="Farm Name" />
+              <Input name="city" defaultValue={selectedProducer?.city || ''} placeholder="City" />
+              <Input name="state" defaultValue={selectedProducer?.state || ''} placeholder="State" />
+              <Input name="farmSize" type="number" defaultValue={selectedProducer?.farmSize || ''} placeholder="Farm Size" />
+              <Input name="usableArea" type="number" defaultValue={selectedProducer?.usableArea || ''} placeholder="Usable Area" />
+              <Input name="vegetationArea" type="number" defaultValue={selectedProducer?.vegetationArea || ''} placeholder="Vegetation Area" />
+              <Button type="submit" className="col-span-1 sm:col-span-2">{selectedProducer ? 'Update' : 'Create'}</Button>
+            </form>
+          </div>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
