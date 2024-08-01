@@ -27,6 +27,7 @@ const handleValidationError = async (error: any) => {
   if (error.message === 'Validation Error') {
     if (error.errors && error.errors.length > 0) {
       error.errors.forEach((err: any) => {
+        //@ts-ignore
         Object.values(err.constraints).forEach((constraint: string) => {
           toast({
             title: 'Validation Error',
