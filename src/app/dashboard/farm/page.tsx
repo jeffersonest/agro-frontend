@@ -92,7 +92,7 @@ const ProducerCropsPage: React.FC = () => {
       setIsDrawerOpen(false);
       toast({
         title: 'Success',
-        description: 'ProducerCrop created successfully',
+        description: 'Farm created successfully',
       });
     },
     onError: handleValidationError,
@@ -109,7 +109,7 @@ const ProducerCropsPage: React.FC = () => {
       setIsDrawerOpen(false);
       toast({
         title: 'Success',
-        description: 'ProducerCrop updated successfully',
+        description: 'Farm updated successfully',
       });
     },
     onError: handleValidationError,
@@ -124,7 +124,7 @@ const ProducerCropsPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['producerCrops'] });
       toast({
         title: 'Success',
-        description: 'ProducerCrop deleted successfully',
+        description: 'Farm deleted successfully',
       });
     },
     onError: (error: any) => {
@@ -137,7 +137,6 @@ const ProducerCropsPage: React.FC = () => {
 
   const columns = useMemo<ColumnDef<ProducerCrop, ColumnMeta>[]>(
     () => [
-      { accessorKey: 'id', header: 'ID', meta: { isHiddenMobile: true } },
       { accessorKey: 'producer.producerName', header: 'Producer Name' },
       { accessorKey: 'crop.name', header: 'Crop Name' },
       { accessorKey: 'area', header: 'Area' },
