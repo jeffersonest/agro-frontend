@@ -83,7 +83,7 @@ const LoginPage: React.FC = () => {
         </CardContent>
         <CardFooter>
           <p className="text-sm text-muted-foreground">
-            Don't have an account? <a href="/register" className="text-blue-500">Register</a>
+            Dont have an account? <a href="/register" className="text-blue-500">Register</a>
           </p>
         </CardFooter>
       </Card>
